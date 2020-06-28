@@ -1,5 +1,6 @@
-from predict.InformationCollector import *
 from predict.Train import *
+
+from predict.InformationCollector import InformationCollector
 
 if __name__ == "__main__":
     pass

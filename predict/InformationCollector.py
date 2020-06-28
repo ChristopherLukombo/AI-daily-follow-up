@@ -73,13 +73,16 @@ class InformationCollector:
 
     def fill_X_and_y(self, training_data):
         X = []  # features
-        y = []  # labels
+        y = []
         for features, label in training_data:
             X.append(features)
             y.append(label)
+
+        y = np.array(y)
         return X, y
 
     def reshape(self, X):
+
         return np.array(X).reshape(-1, Constantes.IMG_SIZE, Constantes.IMG_SIZE, 1)
 
     def save_infos(self, X, y):

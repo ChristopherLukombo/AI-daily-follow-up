@@ -1,10 +1,20 @@
+import json
+from json import JSONEncoder
+import numpy
 import flask
 from flask import request, abort
 
+from PIL import Image
 from predict.InformationCollector import *
 from predict.Predict import Predict
 from predict.Train import *
 
+
+class NumpyArrayEncoder(JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, numpy.ndarray):
+            return obj.tolist()
+        return JSONEncoder.default(self, obj)
 
 
 if __name__ == "__main__":
@@ -25,7 +35,17 @@ def pictureContent():
 
     predict = Predict()
 
-    return predict.predict(labels, name)
+
+    val = predict.predict(labels, name)
+
+
+    # Serialization
+    numpyData = {"array": val}
+    encodedNumpyData = json.dumps(numpyData, cls=NumpyArrayEncoder)
+
+
+
+    return encodedNumpyData
 
 app.run()
 

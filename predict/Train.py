@@ -31,13 +31,13 @@ class Train:
 
         # 2 hidden layers
         model.add(Flatten())
-        model.add(Dense(128))
+        model.add(Dense(512))
         model.add(Activation("relu"))
-        model.add(Dense(128))
+        model.add(Dense(256))
         model.add(Activation("relu"))
 
         # The output layer with 120 neurons, for 120 classes
-        model.add(Dense(120))
+        model.add(Dense(101))
         model.add(Activation("softmax"))
         return model
 
@@ -47,7 +47,8 @@ class Train:
                       metrics=["accuracy"])
 
     def train_model(self, model, X, y):
-        return model.fit(X, y, batch_size=32, epochs=1, validation_split=0.1)
+
+        return model.fit(X, y, batch_size=512, epochs=200, validation_split=0.2)
 
     def save_model(self, model):
         model_json = model.to_json()
@@ -61,8 +62,8 @@ class Train:
     def display_infos(self, result):
         print(result.history.keys())
         plt.figure(1)
-        plt.plot(result.history['acc'])
-        plt.plot(result.history['val_acc'])
+        plt.plot(result.history['accuracy'])
+        plt.plot(result.history['val_accuracy'])
         plt.title('model accuracy')
         plt.ylabel('accuracy')
         plt.xlabel('epoch')

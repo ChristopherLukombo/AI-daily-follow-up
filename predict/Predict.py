@@ -49,7 +49,7 @@ class Predict:
                     break
                 all_files = os.listdir(os.path.join(Constantes.ROOT_DIRECTORY, food_directory))
                 for k in range(len(all_files)):
-                    if k == Constantes.NB_IMAGES:
+                    if k == Constantes.NB_IMAGES2:
                         break
                     k = k + 1
                     image = all_files[k]
@@ -62,18 +62,18 @@ class Predict:
                     prediction = model.predict([picture_array])
                     prediction = list(prediction[0])
 
-                    print(max(prediction))
+                    #print(max(prediction))
 
                     prediction_ = labels[prediction.index(max(prediction))]
 
-                    print(prediction_)
+                    #print(prediction_)
 
                     if prediction_.lower().find(name.lower()) >= 0:
                         print(prediction_)
                         imageFound = new_array
                         break
 
-        if imageFound  == None:
+        if imageFound is None:
             imageFound = ''
 
         return imageFound
