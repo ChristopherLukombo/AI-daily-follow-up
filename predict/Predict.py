@@ -6,6 +6,7 @@ from predict.Constantes import Constantes
 import os
 import pickle
 import random
+import base64
 
 from textblob import TextBlob
 
@@ -19,6 +20,12 @@ class Predict:
         img_array = cv2.imread(file, cv2.IMREAD_GRAYSCALE)
         new_array = cv2.resize(img_array, (Constantes.IMG_SIZE, Constantes.IMG_SIZE))
         return new_array.reshape(-1, Constantes.IMG_SIZE, Constantes.IMG_SIZE, 1)
+
+    def __picture_to_base64(self, file):
+        picture = None
+        with open(file, "rb") as img_file:
+            picture = base64.b64encode(img_file.read())
+        return picture
 
     def predict_display(self, classes):
         model = tf.keras.models.load_model("CNN.model")
@@ -70,7 +77,7 @@ class Predict:
 
                     if prediction_.lower().find(name.lower()) >= 0:
                         print(prediction_)
-                        imageFound = new_array
+                        imageFound = self.__picture_to_base64(os.path.join(path, image))
                         break
 
         if imageFound is None:

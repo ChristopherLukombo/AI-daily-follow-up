@@ -8,13 +8,13 @@ from PIL import Image
 from predict.InformationCollector import *
 from predict.Predict import Predict
 from predict.Train import *
+import base64
 
-
-class NumpyArrayEncoder(JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, numpy.ndarray):
-            return obj.tolist()
-        return JSONEncoder.default(self, obj)
+# class NumpyArrayEncoder(JSONEncoder):
+#     def default(self, obj):
+#         if isinstance(obj, numpy.ndarray):
+#             return obj.tolist()
+#         return JSONEncoder.default(self, obj)
 
 
 if __name__ == "__main__":
@@ -40,12 +40,10 @@ def pictureContent():
 
 
     # Serialization
-    numpyData = {"array": val}
-    encodedNumpyData = json.dumps(numpyData, cls=NumpyArrayEncoder)
+    # numpyData = {"array": val}
+    # encodedNumpyData = json.dumps(numpyData, cls=NumpyArrayEncoder)
 
-
-
-    return encodedNumpyData
+    return val
 
 app.run()
 
