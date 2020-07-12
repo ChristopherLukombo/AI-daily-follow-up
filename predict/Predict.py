@@ -1,18 +1,13 @@
-import cv2
-import tensorflow as tf
-# from googletrans import Translator
+#  Author : LUKOMBO Christopher
+#  Version : 17
 
+import tensorflow as tf
 from predict.Constantes import Constantes
 import os
-import pickle
 import random
 import base64
-
-from textblob import TextBlob
-
 import cv2
 import matplotlib.pyplot as plt
-import numpy as np
 
 class Predict:
 
@@ -34,10 +29,7 @@ class Predict:
         prediction = model.predict([picture_array])
         prediction = list(prediction[0])
 
-        print(max(prediction))
-
         prediction_ = classes[prediction.index(max(prediction))]
-        print(prediction_)
 
     def predict(self, labels, name):
         model = tf.keras.models.load_model("CNN.model")
@@ -47,7 +39,7 @@ class Predict:
         sorted_food_dirs = sorted(os.listdir(Constantes.ROOT_DIRECTORY))
 
         image = None
-        imageFound  = None
+        imageFound  = []
         for i in range(Constantes.ROWS):
             for j in range(Constantes.COLS):
                 try:
@@ -59,7 +51,7 @@ class Predict:
                     if k == Constantes.NB_IMAGES2:
                         break
                     k = k + 1
-                    image = all_files[k]
+                    image = all_files[random.randint(0, len(all_files)-1)]
 
                     path = Constantes.ROOT_DIRECTORY + food_directory
 
@@ -69,16 +61,15 @@ class Predict:
                     prediction = model.predict([picture_array])
                     prediction = list(prediction[0])
 
-                    #print(max(prediction))
-
                     prediction_ = labels[prediction.index(max(prediction))]
-
-                    #print(prediction_)
-
                     if prediction_.lower().find(name.lower()) >= 0:
-                        print(prediction_)
-                        imageFound = self.__picture_to_base64(os.path.join(path, image))
-                        break
+
+                        #Leaving print on purpose for presentation
+                        print(food_directory, ' : ', prediction_)
+                        print()
+                        imageFound.append(self.__picture_to_base64(os.path.join(path, image)))
+
+
 
         if imageFound is None:
             imageFound = ''

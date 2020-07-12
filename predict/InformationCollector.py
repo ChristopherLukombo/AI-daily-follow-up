@@ -1,3 +1,7 @@
+#  Author : LUKOMBO Christopher
+#  Version : 17
+
+
 import os
 import pickle
 import random

@@ -1,3 +1,7 @@
+#  Author : LUKOMBO Christopher
+#  Version : 17
+
+
 from predict.Train import *
 
 from predict.InformationCollector import InformationCollector
@@ -31,14 +35,6 @@ result = train.train_model(model, X, y)
 
 train.save_model(model)
 
-train.display_infos(result)
-
 classes = information_collector.get_classes()
 
 labels = information_collector.get_labels()
-
-# Predict
-
-# predict = Predict()
-#
-# predict.predict_display(labels)

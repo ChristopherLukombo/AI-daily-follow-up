@@ -1,7 +1,10 @@
+#  Author : LUKOMBO Christopher, DELIESSCHE Angelo
+#  Version : 17
+
 import pickle
 
 import matplotlib.pyplot as plt
-from tensorflow.python.keras import Sequential
+from tensorflow.python.keras import Sequential, regularizers
 from tensorflow.python.keras.layers import Conv2D, Activation, MaxPooling2D, Dropout, Flatten, Dense
 
 
@@ -31,13 +34,21 @@ class Train:
 
         # 2 hidden layers
         model.add(Flatten())
-        model.add(Dense(512))
+        model.add(Dense(258, kernel_regularizer=regularizers.l2(0.001)))
         model.add(Activation("relu"))
-        model.add(Dense(256))
+        #model.add(Dropout(0.3))
+
+
+        model.add(Dense(258, kernel_regularizer=regularizers.l2(0.001)))
+        model.add(Activation("relu"))
+        #model.add(Dropout(0.5))
+        model.add(Dense(258))
         model.add(Activation("relu"))
 
+
+
         # The output layer with 120 neurons, for 120 classes
-        model.add(Dense(101))
+        model.add(Dense(10))
         model.add(Activation("softmax"))
         return model
 
@@ -48,7 +59,7 @@ class Train:
 
     def train_model(self, model, X, y):
 
-        return model.fit(X, y, batch_size=512, epochs=200, validation_split=0.2)
+        return model.fit(X, y, batch_size=128, epochs=400, validation_split=0.2)
 
     def save_model(self, model):
         model_json = model.to_json()
@@ -68,4 +79,4 @@ class Train:
         plt.ylabel('accuracy')
         plt.xlabel('epoch')
         plt.legend(['train', 'validation'], loc='upper left')
-        # plt.show()
+        plt.show()

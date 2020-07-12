@@ -1,33 +1,31 @@
-import json
-from json import JSONEncoder
-import numpy
+
+#  Author : LUKOMBO Christopher, DELIESSCHE Angelo
+#  Version : 17
+
+
 import flask
 from flask import request, abort
-
-from PIL import Image
 from predict.InformationCollector import *
 from predict.Predict import Predict
-from predict.Train import *
-import base64
-
-# class NumpyArrayEncoder(JSONEncoder):
-#     def default(self, obj):
-#         if isinstance(obj, numpy.ndarray):
-#             return obj.tolist()
-#         return JSONEncoder.default(self, obj)
+from flask_cors import CORS, cross_origin
 
 
 if __name__ == "__main__":
+
     pass
 
 app = flask.Flask(__name__)
+cors = CORS(app)
+
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["DEBUG"] = True
 
 
 @app.route('/contentPicture', methods=['GET'])
+@cross_origin()
 def pictureContent():
-    name = request.args.get('name', None)
-    if name is None:
+    nameInRequest = request.args.get('name', None)
+    if nameInRequest is None:
         abort(404)
 
     information_collector = InformationCollector()
@@ -35,16 +33,13 @@ def pictureContent():
 
     predict = Predict()
 
+    matchedResults = predict.predict(labels, nameInRequest)
+    listToReturn = []
 
-    val = predict.predict(labels, name)
+    for i in matchedResults:
+        listToReturn.append(i.decode("utf8"))
+    jsonToReturn = {"datas": listToReturn}
+    return jsonToReturn
 
-
-    # Serialization
-    # numpyData = {"array": val}
-    # encodedNumpyData = json.dumps(numpyData, cls=NumpyArrayEncoder)
-
-    return val
-
-app.run()
-
+app.run(host="0.0.0.0")
 
